@@ -17,7 +17,6 @@ from .distributed import world_info_from_env
 
 
 BATCH_SIZE = 256
-IMG_SIZE = 224
 EMB_DIM = 512
 N_DATASET_WORKERS = 6
 CHUNK_SIZE = 200
@@ -59,6 +58,7 @@ def clip_video_encode(
     distribute="none",
     oc_model_name="ViT-B-32",
     pretrained="laion2b_s34b_b79k",
+    imag_size=224
 ):
     """
     Encode frames using CLIP image encoder
@@ -127,7 +127,7 @@ def clip_video_encode(
     preprocess.transforms = [ToPILImage()] + preprocess.transforms[-3:]
 
     fm = FrameMapper(model, device)
-    fr = FrameReader(vids, meta_refs, take_every_nth, IMG_SIZE, workers=frame_workers, memory_size=frame_memory_size)
+    fr = FrameReader(vids, meta_refs, take_every_nth, imag_size, workers=frame_workers, memory_size=frame_memory_size)
     fr.start_reading()
 
     frames, ind_dict = [], {}
